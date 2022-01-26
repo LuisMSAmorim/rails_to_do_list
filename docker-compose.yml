@@ -1,0 +1,34 @@
+version: '3'
+services:
+  db:
+    container_name: todolist_db
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: todolist
+      MYSQL_USER: todolist
+      MYSQL_PASSWORD: todolist
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./tmp/db:/var/lib/mysql
+  app:
+    container_name: todolist_app
+    stdin_open: true
+    tty: true # Enables debugging capabilities when attached to this container.
+    build: .
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    volumes: 
+      - ".:/app"
+    ports: 
+      - "3000:3000"
+    depends_on:
+      - db
+    links:
+      - db
+    environment:
+      DB_USER: root
+      DB_NAME: todolist
+      DB_PASSWORD: todolist
+      DB_HOST: db
