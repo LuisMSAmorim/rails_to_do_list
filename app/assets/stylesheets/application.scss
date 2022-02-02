@@ -13,3 +13,15 @@
  *= require_tree .
  *= require_self
  */
+
+  @import "bootstrap";
+
+  body {
+    background-color: #eceef1;
+  }
+
+  .container-md.main {
+    padding: 20px 15px;
+    background-color: #fff;
+    border: 1px solid #e4e4e4;
+  }
