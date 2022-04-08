@@ -51,7 +51,7 @@ class ProjectsController < ApplicationController
 
   # DELETE /projects/1 or /projects/1.json
   def destroy
-    project_service.destroy(project: @project)
+    project_service.destroy(project_id: @project.id)
 
     respond_to do |format|
       format.html { redirect_to projects_url, notice: "Project was successfully destroyed." }

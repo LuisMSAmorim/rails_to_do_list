@@ -2,9 +2,40 @@ require 'rails_helper'
 
 RSpec.describe ProjectService, type: :service do
 
-    before :all do
+    before do
         @project_service = ProjectService.new
-        @project_id = 1
+        
+        @project = Project.new(title: "Test")
+        @project.save
+    end
+
+    describe "#create" do 
+
+        it "Deve criar um novo projeto" do
+            params = { title: "Test1" }
+            project = @project_service.create(params)
+
+            expect(project.title).to eq("Test1")
+        end
+    end
+
+    describe "#destroy" do
+            
+            it "Deve deletar um projeto" do
+                @project_service.destroy(project_id: @project.id)
+    
+                expect(Project.all.count).to eq(0)
+            end
+    end
+
+    describe "#update" do
+
+        it "Deve atualizar um projeto" do
+            params = { title: "Test2" }
+            project = @project_service.update(params, project_id: @project.id)
+            
+            expect(project.title).to eq("Test2")
+        end
     end
 
     describe 'complete_percentage' do

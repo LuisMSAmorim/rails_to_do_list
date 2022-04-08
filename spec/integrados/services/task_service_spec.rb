@@ -30,6 +30,12 @@ RSpec.describe 'TaskService' do
     end
 
     describe '#update' do
+
+        it "Deve atualizar os dados de uma tarefa" do
+            @task_service.update(task: @task, params: { title: "Test1" })
+
+            expect(Task.all.first.title).to eq("Test1")
+        end
     end
 
     describe '#change_status' do
