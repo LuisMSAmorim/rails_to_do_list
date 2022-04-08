@@ -1,0 +1,24 @@
+%h1 Lista de Projetos
+
+%table.table
+  %thead
+    %tr
+      %th Título
+      %th Percentual de tarefas completas
+      %th
+      %th
+      %th
+
+  %tbody
+    - @projects.each do |project|
+      %tr
+        %td= project.title
+        %td= project.percentage_format
+        %td= link_to 'Tarefas', project_tasks_path(project), class: 'btn btn-secondary'
+        %td= link_to 'Detalhes', project, class: 'btn btn-primary'
+        %td= link_to 'Editar', edit_project_path(project), class: 'btn btn-warning'
+        %td= link_to 'Deletar', project, data: { turbo_confirm: 'Você tem certeza? Esta ação irá deletar todas as tarefas relacionadas a este projeto!', turbo_method: :delete }, class: 'btn btn-danger'
+
+%br
+
+= link_to 'Novo Projeto', new_project_path, class: 'btn btn-dark'

@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Título:
+  = @project.title
+%p
+  %b Percentual de tarefas completas:
+  = @project.percentage_format
+
+= link_to 'Editar', edit_project_path(@project), class: 'btn btn-warning btn-sm'
+\|
+= link_to 'Voltar', projects_path, class: "btn btn-dark btn-sm"

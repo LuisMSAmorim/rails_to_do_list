@@ -1,0 +1,7 @@
+%h1 Edição de Tarefa
+
+= render 'form'
+
+= link_to 'Detalhes', project_task_path(@project, @task), class: "btn btn-primary btn-sm"
+\|
+= link_to 'Voltar', project_tasks_path(@project), class: "btn btn-dark btn-sm"

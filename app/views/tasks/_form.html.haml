@@ -1,0 +1,22 @@
+= form_for [@project, @task] do |f|
+  - if @task.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@task.errors.count, "error")} prohibited this task from being saved:"
+      %ul
+        - @task.errors.full_messages.each do |message|
+          %li= message
+
+  .field
+    = f.label :title, "Título", class: 'form-label mt-2'
+    = f.text_field :title, class: 'form-control', placeholder: 'Título'
+  .field
+    = f.label :date_start, "Data de início", class: 'form-label mt-2'
+    = f.date_field :date_start, class: 'form-control'
+  .field
+    = f.label :date_end, "Data de fim", class: 'form-label mt-2'
+    = f.date_field :date_end, class: 'form-control'
+  .field
+    = f.label :state, "Concluída", class: 'form-label mt-2'
+    = f.check_box :state, class: 'form-check-input mt-2'
+  .actions
+    = f.submit 'Salvar', class: 'btn btn-success mt-2 mb-2'

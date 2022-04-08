@@ -1,0 +1,27 @@
+%h1 Lista de Tarefas
+
+%table.table
+  %thead
+    %tr
+      %th Título
+      %th Data de início
+      %th Data de fim
+      %th Situação
+      %th Prazo
+
+  %tbody
+    - @tasks.each do |task|
+      %tr
+        %td= task.title
+        %td= task.date_start.to_date
+        %td= task.date_end.to_date
+        %td= link_to task.human_state, project_task_change_status_path(@project, task), data: { turbo_method: :put }, class: task.human_state == 'Concluído' ? 'btn btn-success': 'btn btn-info'
+        %td
+          %p{ class: task.deadline_status == "Prazo expirado" ? 'btn btn-danger' : 'btn btn-success' }= task.deadline_status
+        %td= link_to 'Detalhes', project_task_path(@project, task), class: 'btn btn-primary'
+        %td= link_to 'Editar', edit_project_task_path(@project, task), class: 'btn btn-warning'
+        %td= link_to 'Deletar', project_task_path(@project, task), data: { turbo_confirm: 'Você tem certeza?', turbo_method: :delete }, class: 'btn btn-danger'
+
+%br
+
+= link_to 'Nova Tarefa', new_project_task_path(@project), class: 'btn btn-dark'

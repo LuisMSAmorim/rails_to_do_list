@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Título:
+  = @task.title
+%p
+  %b Data de ínicio:
+  = @task.date_start.to_date
+%p
+  %b Data de fim:
+  = @task.date_end.to_date
+%p
+  %b Status:
+  = @task.human_state
+
+= link_to 'Editar', edit_project_task_path(@project, @task), class: 'btn btn-warning btn-sm'
+\|
+= link_to 'Voltar', project_tasks_path(@project), class: "btn btn-dark btn-sm"
