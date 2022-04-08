@@ -9,12 +9,24 @@ RSpec.describe 'TaskService' do
         @project.save
 
         @task = Task.create(title: "Test", date_start: Time.now, date_end: Time.now + 2, project_id: @project.id)
+        @params = { title: "Test", date_start: Time.now, date_end: Time.now + 2, project_id: @project.id }
     end
 
     describe '#create' do
+   
+        it "Deve criar uma nova tarefa" do
+            task = @task_service.create(@params, project_id: @project.id)
+            expect(task.title).to eq("Test")
+        end
     end
 
     describe '#destroy' do
+        
+        it "Deve deletar uma tarefa" do   
+            @task_service.destroy(task: @task, project_id: @project.id)
+
+            expect(Task.all.count).to eq(0)
+        end
     end
 
     describe '#update' do

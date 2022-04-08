@@ -4,11 +4,11 @@ RSpec.describe Task, type: :model do
     
     let(:task) { Task.new(title: 'Test') }
 
-    describe 'belongs' do
+    describe 'associações' do
         it { is_expected.to belong_to(:project) }
     end
 
-    describe 'validação' do
+    describe 'validações' do
 
         describe 'title' do
             it { is_expected.to validate_presence_of(:title) }
@@ -48,6 +48,34 @@ RSpec.describe Task, type: :model do
         it 'deve retornar "Pending" quando o estado for nil' do
             task.stub(state: nil)
             expect(task.human_state).to eq('Pendente')
+        end
+    end
+
+    describe 'dealine status' do 
+
+        context "Tarefa ainda não finalizada" do
+
+            before do
+                task.stub(human_state: "Pendente")
+            end
+            
+            it 'Deve retornar "Dentro do prazo" caso a end_date seja maior que a data atual' do
+                task.date_end = Time.now + 1.day
+                expect(task.deadline_status).to eq('Dentro do prazo')
+            end
+
+            it 'Deve retornar "Prazo expirado" caso a end_date seja menor que a data atual' do
+                task.date_end = Time.now - 1.day
+                expect(task.deadline_status).to eq('Prazo expirado')
+            end
+        end
+
+        context "Tarefa já finalizada" do
+
+            it 'Deve retornar "Finalizada"' do
+                task.stub(human_state: "Concluído")
+                expect(task.deadline_status).to eq('Finalizada')
+            end
         end
     end
 end
