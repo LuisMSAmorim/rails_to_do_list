@@ -4,15 +4,12 @@ class TaskService < ApplicationService
         task = Task.new(params)
         task.project_id = project_id
         
-        task.save
-        project_service.update_percent_complete(project_id)
         task
     end
 
     def update(task:, params:)
         task.update(params)
-        task.save
-        project_service.update_percent_complete(task.project_id)
+
         task
     end
 

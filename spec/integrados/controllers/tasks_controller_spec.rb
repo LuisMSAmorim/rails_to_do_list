@@ -124,18 +124,40 @@ RSpec.describe TasksController, type: :controller do
     end
 
     describe 'PATCH#update' do
-        before do
-            @params = {"task"=>{"title"=>"test", "date_start"=>"2022-04-01T10:00", "date_end"=>"2022-04-15T11:00", "state"=>true}, "commit"=>"Save", "project_id"=>project.id, "id"=>task.id}
 
-            patch :update, params: @params
-        end 
-
-        it 'Deve validar os campos atualizados' do
-            expect(task.reload).to have_attributes(
-                title: "test",
-                state: true,
-                project_id: project.id,
-            )
-        end
+        context 'sucesso' do
+            before do
+                @params = {"task"=>{"title"=>"test"}, "commit"=>"Update", "project_id"=>project.id, "id"=>task.id}
+    
+                patch :update, params: @params
+            end 
+      
+            it 'deve atualizar o título do projeto' do
+                expect(task.reload.title).to eq('test')
+            end
+      
+            it 'retorna mensagem de sucesso' do
+                expect(response.request.flash[:notice]).to eq("Task was successfully updated.")
+            end
+          end
+      
+          context 'erro' do
+            before do
+                @params = {"task"=>{"title"=>""}, "commit"=>"Update", "project_id"=>project.id, "id"=>task.id}
+                patch :update, params: @params
+            end
+      
+            it 'não deve atualizar o título do projeto' do
+                expect(task.reload.title).to eq("Test task")
+            end
+      
+            it 'retorna status 422' do
+                expect(response.status).to eq(422)
+            end
+      
+            it 'renderiza o template edit' do
+                expect(response).to render_template(:edit)
+            end
+          end
     end
 end
