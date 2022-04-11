@@ -17,7 +17,7 @@
         %td= task.date_end.to_date
         %td= link_to task.human_state, project_task_change_status_path(@project, task), data: { turbo_method: :put }, class: task.human_state == 'Concluído' ? 'btn btn-success': 'btn btn-info'
         %td
-          %p{ class: task.deadline_status == "Prazo expirado" ? 'btn btn-danger' : 'btn btn-success' }= task.deadline_status
+          %p{ class: task.deadline_status == "Prazo expirado" ? 'btn btn-danger' : 'btn btn-success', style: "cursor: default" }= task.deadline_status
         %td= link_to 'Detalhes', project_task_path(@project, task), class: 'btn btn-primary'
         %td= link_to 'Editar', edit_project_task_path(@project, task), class: 'btn btn-warning'
         %td= link_to 'Deletar', project_task_path(@project, task), data: { turbo_confirm: 'Você tem certeza?', turbo_method: :delete }, class: 'btn btn-danger'
