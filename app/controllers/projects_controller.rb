@@ -21,7 +21,7 @@ class ProjectsController < ApplicationController
 
   # POST /projects or /projects.json
   def create
-    project = project_service.create(project_params)
+    project = project_service.create(params: project_params)
 
     respond_to do |format|
       if project.save
@@ -36,7 +36,7 @@ class ProjectsController < ApplicationController
 
   # PATCH/PUT /projects/1 or /projects/1.json
   def update
-    project = project_service.update(project_params, project_id: @project.id)
+    project = project_service.update(project_id: @project.id, params: project_params)
 
     respond_to do |format|
       if project.save

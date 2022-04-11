@@ -11,23 +11,22 @@ RSpec.describe Task, type: :model do
     describe 'validações' do
 
         describe 'title' do
+            
             it { is_expected.to validate_presence_of(:title) }
             it { is_expected.to validate_length_of(:title).is_at_most(255) }
         end
 
         describe 'dates' do
+
             it { is_expected.to validate_presence_of(:date_start) }
             it { is_expected.to validate_presence_of(:date_end) }
     
             it 'não deve aceitar data de início maior que data de fim' do
-                #setup
-                task.date_start = Time.now
-                task.date_end = Time.now - 1.day
+                task.stub(date_start: Time.now)
+                task.stub(date_end: Time.now - 1.day)
     
-                #execução
                 task.valid?
     
-                #expect
                 expect(task.errors.added?(:date_start, "Can't be greater than date end")).to eq(true)
             end
         end
@@ -60,12 +59,12 @@ RSpec.describe Task, type: :model do
             end
             
             it 'Deve retornar "Dentro do prazo" caso a end_date seja maior que a data atual' do
-                task.date_end = Time.now + 1.day
+                task.stub(date_end: Time.now + 1.day)
                 expect(task.deadline_status).to eq('Dentro do prazo')
             end
 
             it 'Deve retornar "Prazo expirado" caso a end_date seja menor que a data atual' do
-                task.date_end = Time.now - 1.day
+                task.stub(date_end: Time.now - 1.day)
                 expect(task.deadline_status).to eq('Prazo expirado')
             end
         end

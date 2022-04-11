@@ -9,14 +9,15 @@ RSpec.describe 'TaskService' do
         @project.save
 
         @task = Task.create(title: "Test", date_start: Time.now, date_end: Time.now + 2, project_id: @project.id)
-        @params = { title: "Test", date_start: Time.now, date_end: Time.now + 2, project_id: @project.id }
     end
-
+    
     describe '#create' do
-   
+
         it "Deve criar uma nova tarefa" do
-            task = @task_service.create(@params, project_id: @project.id)
-            expect(task.title).to eq("Test")
+            @params = { title: "Test0", date_start: Time.now, date_end: Time.now + 2, project_id: @project.id }
+
+            task = @task_service.create(params: @params, project_id: @project.id)
+            expect(task.title).to eq("Test0")
         end
     end
 
@@ -32,9 +33,9 @@ RSpec.describe 'TaskService' do
     describe '#update' do
 
         it "Deve atualizar os dados de uma tarefa" do
-            @task_service.update(task: @task, params: { title: "Test1" })
+            task = @task_service.update(task: @task, params: { title: "Test1" })
 
-            expect(Task.all.first.title).to eq("Test1")
+            expect(task.title).to eq("Test1")
         end
     end
 
@@ -45,7 +46,7 @@ RSpec.describe 'TaskService' do
             it "Quando o state for nil" do
                 @task_service.change_status(task_id: @task.id)
     
-                expect(@task.reload.state).to eq(true)
+                expect(@task.reload.state).to be_truthy
             end
     
             it "Quando o state for false" do
@@ -58,6 +59,7 @@ RSpec.describe 'TaskService' do
         end 
         
         context 'Transformar tarefa em pendente' do
+            
             it "Quando o state for true" do
                 @task.update(state: true)
     

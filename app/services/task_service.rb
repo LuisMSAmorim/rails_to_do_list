@@ -1,6 +1,6 @@
 class TaskService < ApplicationService
 
-    def create(params, project_id:)
+    def create(project_id:, params:)
         task = Task.new(params)
         task.project_id = project_id
         
@@ -8,6 +8,7 @@ class TaskService < ApplicationService
     end
 
     def update(task:, params:)
+        task = find_task(task_id: task.id)
         task.update(params)
 
         task

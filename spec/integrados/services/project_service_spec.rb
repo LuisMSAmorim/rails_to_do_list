@@ -13,7 +13,7 @@ RSpec.describe ProjectService, type: :service do
 
         it "Deve criar um novo projeto" do
             params = { title: "Test1" }
-            project = @project_service.create(params)
+            project = @project_service.create(params: params)
 
             expect(project.title).to eq("Test1")
         end
@@ -32,7 +32,7 @@ RSpec.describe ProjectService, type: :service do
 
         it "Deve atualizar um projeto" do
             params = { title: "Test2" }
-            project = @project_service.update(params, project_id: @project.id)
+            project = @project_service.update(project_id: @project.id, params: params)
             
             expect(project.title).to eq("Test2")
         end
@@ -57,6 +57,11 @@ RSpec.describe ProjectService, type: :service do
         it 'Deve ser 100 caso só haja uma tarefa concluída' do
             set_total_and_concluded_tasks_relation(total_tasks: 1, task_concluded: 1)
             expect(@project_service.complete_percentage(project_id: @project_id)).to eq(100)
+        end
+
+        it 'Deve ser zero caso não haja nenhuma tarefa' do
+            set_total_and_concluded_tasks_relation(total_tasks: 0, task_concluded: 0)
+            expect(@project_service.complete_percentage(project_id: @project_id)).to eq(0)
         end
     end
 end

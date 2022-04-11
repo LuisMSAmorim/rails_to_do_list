@@ -22,7 +22,7 @@ class TasksController < ApplicationController
 
   # POST /tasks or /tasks.json
   def create
-    task = task_service.create(task_params, project_id: @project.id)
+    task = task_service.create(project_id: @project.id, params: task_params)
 
     respond_to do |format|
       if task.save

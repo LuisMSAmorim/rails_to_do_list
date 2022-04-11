@@ -1,15 +1,15 @@
 class ProjectService < ApplicationService
 
-    def create(params)
+    def create(params:)
         project = Project.new(params)
         project.completed_percent = 0
         
         project
     end
 
-    def update(params, project_id:)
+    def update(params:, project_id:)
         project = find_project(project_id: project_id)
-        project.assign_attributes(params)
+        project.update(params)
 
         project
     end
