@@ -3,15 +3,15 @@ class TaskService < ApplicationService
     def create(project_id:, params:)
         task = Task.new(params)
         task.project_id = project_id
-        
-        task
+
+        save_task_if_is_valid(task) 
     end
 
     def update(task:, params:)
         task = find_task(task_id: task.id)
         task.update(params)
 
-        task
+        save_task_if_is_valid(task)
     end
 
     def destroy(task:, project_id:)
@@ -43,5 +43,13 @@ class TaskService < ApplicationService
 
     def project_service
         @project_service ||= ProjectService.new
+    end
+
+    def save_task_if_is_valid(task)
+        if task.valid?
+            task.save
+            project_service.update_percent_complete(task.project_id)
+            task
+        end
     end
 end

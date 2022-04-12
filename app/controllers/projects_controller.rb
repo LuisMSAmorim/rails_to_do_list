@@ -23,8 +23,8 @@ class ProjectsController < ApplicationController
   def create
     project = project_service.create(params: project_params)
 
-    respond_to do |format|
-      if project.save
+    respond_to do |format|  
+      if project
         format.html { redirect_to projects_url(@project), notice: "Project was successfully created." }
         format.json { render :show, status: :created, location: @project }
       else
@@ -39,7 +39,7 @@ class ProjectsController < ApplicationController
     project = project_service.update(project_id: @project.id, params: project_params)
 
     respond_to do |format|
-      if project.save
+      if project
         format.html { redirect_to project_url(@project), notice: "Project was successfully updated." }
         format.json { render :show, status: :ok, location: @project }
       else

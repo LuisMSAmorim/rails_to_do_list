@@ -25,8 +25,7 @@ class TasksController < ApplicationController
     task = task_service.create(project_id: @project.id, params: task_params)
 
     respond_to do |format|
-      if task.save
-        project_service.update_percent_complete(task.project_id)
+      if task
         format.html { redirect_to project_tasks_url(@project), notice: "Task was successfully created." }
         format.json { render :show, status: :created, location: @task }
       else
@@ -41,8 +40,7 @@ class TasksController < ApplicationController
     task = task_service.update(task: @task, params: task_params)
 
     respond_to do |format|
-      if task.save
-        project_service.update_percent_complete(task.project_id)
+      if task
         format.html { redirect_to project_tasks_url(@project), notice: "Task was successfully updated." }
         format.json { render :show, status: :ok, location: @task }
       else
