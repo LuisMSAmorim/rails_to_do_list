@@ -34,7 +34,7 @@ RSpec.describe ProjectService, type: :service do
             params = { title: "Test2" }
             project = @project_service.update(project_id: @project.id, params: params)
             
-            expect(project.title).to eq("Test2")
+            expect(project.reload.title).to eq("Test2")
         end
     end
 

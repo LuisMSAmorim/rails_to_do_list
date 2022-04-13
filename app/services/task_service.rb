@@ -4,14 +4,13 @@ class TaskService < ApplicationService
         task = Task.new(params)
         task.project_id = project_id
 
-        task.save
         task
     end
 
     def update(task:, params:)
         task = find_task(task_id: task.id)
         task.assign_attributes(params)
-
+        
         task.save
         task
     end
