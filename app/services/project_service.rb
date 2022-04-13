@@ -8,10 +8,10 @@ class ProjectService < ApplicationService
     end
 
     def update(params:, project_id:)
-        project = find_project(project_id: project_id)
+            project = find_project(project_id: project_id)
         project.assign_attributes(params)
-
         project.save
+
         project
     end
 
