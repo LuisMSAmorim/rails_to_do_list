@@ -140,7 +140,7 @@ RSpec.describe TasksController, type: :controller do
                 expect(response.request.flash[:notice]).to eq("Task was successfully updated.")
             end
           end
-      
+      true
           context 'erro' do
             before do
                 @params = {"task"=>{"title"=>""}, "commit"=>"Update", "project_id"=>project.id, "id"=>task.id}
@@ -159,5 +159,53 @@ RSpec.describe TasksController, type: :controller do
                 expect(response).to render_template(:edit)
             end
           end
+    end
+
+    describe 'PUT#change_status' do
+
+        context 'sucesso' do
+
+            context 'quando state for nil' do
+                before do
+                    @params = { task_id: task.id, project_id: project.id }
+                    put :change_status, params: @params
+                end
+    
+                it 'deve alterar o status da tarefa para true' do
+                    expect(task.reload.state).to eq(true)
+                end
+    
+                it 'retorna mensagem de sucesso' do
+                    expect(response.request.flash[:notice]).to eq("Task was successfully updated.")
+                end
+            end
+    
+            context 'quando state for true' do
+                before do
+                    @params = { task_id: task.id, project_id: project.id }
+                    task.update(state: true)
+                    put :change_status, params: @params
+                end
+    
+                it 'deve alterar o status da tarefa para false' do
+                    expect(task.reload.state).to be_falsy
+                end
+    
+                it 'retorna mensagem de sucesso' do
+                    expect(response.request.flash[:notice]).to eq("Task was successfully updated.")
+                end
+            end
+        end
+
+        context 'erro' do
+            before do
+                @params = { task_id: 391013981209, project_id: project.id }
+                put :change_status, params: @params
+            end
+
+            it 'retorna mensagem de erro' do
+                expect(response.request.flash[:notice]).to eq("Task not found")
+            end
+        end
     end
 end

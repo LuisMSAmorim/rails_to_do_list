@@ -61,6 +61,7 @@ class TasksController < ApplicationController
     end
   end
 
+  # PUT /projects/:project_id/tasks/:task_id/change_status(.:format)
   def change_status
     begin
       @task = task_service.change_status(task_id: params[:task_id].to_i)
