@@ -39,8 +39,4 @@ class TaskService < ApplicationService
     def change_task_state(task)
         task.state = !task.state
     end
-
-    def project_service
-        @project_service ||= ProjectService.new
-    end
 end
