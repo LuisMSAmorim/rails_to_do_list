@@ -55,15 +55,20 @@ RSpec.describe ProjectsController, type: :controller do
 
     context 'erro' do
       before do
+        @params = { project: { title: '' } }
+        post :create, params: @params
       end
 
       it 'não deve criar um registro' do
+        expect(Project.count).to eq(0)
       end
 
-      it 'retorna status STATUS_HTTP' do
+      it 'retorna status 422' do
+        expect(response.status).to eq(422)
       end
 
       it 'renderiza o template new' do
+        expect(response).to render_template(:new)
       end
     end
   end

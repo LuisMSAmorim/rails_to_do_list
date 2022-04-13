@@ -4,14 +4,14 @@ class ProjectService < ApplicationService
         project = Project.new(params)
         project.completed_percent = 0
         
-        save_project_if_is_valid(project)
+        project
     end
 
     def update(params:, project_id:)
         project = find_project(project_id: project_id)
-        project.update(params)
+        project.assign_attributes(params)
 
-        save_project_if_is_valid(project)
+        project
     end
 
     def destroy(project_id:)
@@ -36,12 +36,5 @@ class ProjectService < ApplicationService
     
     def find_project(project_id:)
         Project.find_by(id: project_id)
-    end
-
-    def save_project_if_is_valid(project)
-        if project.valid?
-            project.save
-            project
-        end
     end
 end

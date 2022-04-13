@@ -1,6 +1,7 @@
 class TasksController < ApplicationController
   before_action :set_task, only: %i[ show edit update destroy ]
   before_action :set_project
+  after_action :update_project_percent_complete, only: [:create, :update, :destroy, :change_status]
 
   # GET /tasks or /tasks.json
   def index
@@ -22,10 +23,10 @@ class TasksController < ApplicationController
 
   # POST /tasks or /tasks.json
   def create
-    task = task_service.create(project_id: @project.id, params: task_params)
+    @task = task_service.create(project_id: @project.id, params: task_params)
 
     respond_to do |format|
-      if task
+      if @task.save
         format.html { redirect_to project_tasks_url(@project), notice: "Task was successfully created." }
         format.json { render :show, status: :created, location: @task }
       else
@@ -37,10 +38,10 @@ class TasksController < ApplicationController
 
   # PATCH/PUT /tasks/1 or /tasks/1.json
   def update
-    task = task_service.update(task: @task, params: task_params)
+    @task = task_service.update(task: @task, params: task_params)
 
     respond_to do |format|
-      if task
+      if @task.save
         format.html { redirect_to project_tasks_url(@project), notice: "Task was successfully updated." }
         format.json { render :show, status: :ok, location: @task }
       else
@@ -62,11 +63,13 @@ class TasksController < ApplicationController
 
   def change_status
     begin
-      task_service.change_status(task_id: params[:task_id].to_i)
+      @task = task_service.change_status(task_id: params[:task_id].to_i)
       
       respond_to do |format|
-        format.html { redirect_to project_tasks_url(@project), notice: "Task was successfully updated." }
-        format.json { render :no_content }
+        if @task
+          format.html { redirect_to project_tasks_url(@project), notice: "Task was successfully updated." }
+          format.json { render :no_content }
+        end
       end
     
     rescue TaskNotFoundException => e
@@ -99,5 +102,9 @@ class TasksController < ApplicationController
 
     def project_service
       @project_service ||= ProjectService.new 
+    end
+
+    def update_project_percent_complete
+      project_service.update_percent_complete(@project.id)
     end
 end

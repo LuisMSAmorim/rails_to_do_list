@@ -4,30 +4,30 @@ class TaskService < ApplicationService
         task = Task.new(params)
         task.project_id = project_id
 
-        save_task_if_is_valid(task) 
+        task.save
+        task
     end
 
     def update(task:, params:)
         task = find_task(task_id: task.id)
-        task.update(params)
+        task.assign_attributes(params)
 
-        save_task_if_is_valid(task)
+        task.save
+        task
     end
 
     def destroy(task:, project_id:)
         task = find_task(task_id: task.id)
         task.destroy 
-        project_service.update_percent_complete(project_id)
     end
     
     def change_status(task_id:)
         task = find_task(task_id: task_id)
 
         raise TaskNotFoundException if task.blank?
-        
-        update_task(task, state: !task.state)
+
+        change_task_state(task)   
         task.save
-        project_service.update_percent_complete(task.project_id)
     end
 
     private
@@ -36,20 +36,11 @@ class TaskService < ApplicationService
         Task.find_by(id: task_id)
     end
 
-    def update_task(task, args = {})
-        task.assign_attributes(args)
-        task
+    def change_task_state(task)
+        task.state = !task.state
     end
 
     def project_service
         @project_service ||= ProjectService.new
-    end
-
-    def save_task_if_is_valid(task)
-        if task.valid?
-            task.save
-            project_service.update_percent_complete(task.project_id)
-            task
-        end
     end
 end
