@@ -140,7 +140,7 @@ RSpec.describe TasksController, type: :controller do
                 expect(response.request.flash[:notice]).to eq("Task was successfully updated.")
             end
           end
-      true
+      
           context 'erro' do
             before do
                 @params = {"task"=>{"title"=>""}, "commit"=>"Update", "project_id"=>project.id, "id"=>task.id}

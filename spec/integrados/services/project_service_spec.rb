@@ -21,11 +21,11 @@ RSpec.describe ProjectService, type: :service do
 
     describe "#destroy" do
             
-            it "Deve deletar um projeto" do
-                @project_service.destroy(project_id: @project.id)
-    
-                expect(Project.all.count).to eq(0)
-            end
+        it "Deve deletar um projeto" do
+            @project_service.destroy(project_id: @project.id)
+
+            expect(Project.all.count).to eq(0)
+        end
     end
 
     describe "#update" do
@@ -57,11 +57,6 @@ RSpec.describe ProjectService, type: :service do
         it 'Deve ser 100 caso só haja uma tarefa concluída' do
             set_total_and_concluded_tasks_relation(total_tasks: 1, task_concluded: 1)
             expect(@project_service.complete_percentage(project_id: @project_id)).to eq(100)
-        end
-
-        it 'Deve ser zero caso não haja nenhuma tarefa' do
-            set_total_and_concluded_tasks_relation(total_tasks: 0, task_concluded: 0)
-            expect(@project_service.complete_percentage(project_id: @project_id)).to eq(0)
         end
     end
 end

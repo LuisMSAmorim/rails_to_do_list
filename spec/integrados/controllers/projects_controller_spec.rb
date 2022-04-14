@@ -36,6 +36,7 @@ RSpec.describe ProjectsController, type: :controller do
   end
 
   describe 'POST#create' do
+
     context 'sucesso' do
       before do
         @params = { project: { title: 'Test controller' } }
@@ -61,6 +62,8 @@ RSpec.describe ProjectsController, type: :controller do
 
       it 'não deve criar um registro' do
         expect(Project.count).to eq(0)
+        # verificar teste -> .to change(Project, :count).by(1)
+
       end
 
       it 'retorna status 422' do
@@ -102,6 +105,7 @@ RSpec.describe ProjectsController, type: :controller do
   end
 
   describe 'PATCH#update' do
+
     context 'sucesso' do
       before do
         @params = {"project"=>{"title"=>"Test controller0"}, "commit"=>"Update", "id"=>project.id}

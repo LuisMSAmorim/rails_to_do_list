@@ -17,7 +17,7 @@ RSpec.describe Project, type: :model do
   describe 'percentage_format' do
 
     it 'Deve retornar completed_percent no formato -> "N%" ' do
-      project = Project.create(title: "Test controller")
+      project = Project.new(title: "Test")
       project.stub(completed_percent: 10)
 
       expect(project.percentage_format).to eq('10%')
