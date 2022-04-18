@@ -22,3 +22,10 @@ Para acessar a aplicação acesse no navegador http://localhost:3000
 ```bash
     sudo docker attach todolist_app
 ```
+
+### Rodar a suíte de testes
+
+- Abrir terminal do container
+```bash
+    rspec
+```
